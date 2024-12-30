@@ -1,0 +1,164 @@
+/* General Navbar Styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff; /* White background */
+  padding: 10px 20px; /* Reduced padding */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #007bff; /* Reduced border size */
+}
+
+.navbar-logo {
+  font-size: 1.4rem; /* Reduced logo font size */
+  font-weight: bold;
+  color: #007bff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.logo-text {
+  background: linear-gradient(90deg, #007bff, #ff5722);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Navigation Icons Section */
+.nav-icons {
+  display: flex;
+  gap: 20px; /* Reduced gap */
+}
+
+.nav-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px; /* Reduced padding */
+  border-radius: 8px; /* Slightly smaller border radius */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background: transparent;
+}
+
+.nav-icon-wrapper:hover {
+  background: rgba(0, 123, 255, 0.1); /* Light blue hover effect */
+}
+
+.nav-icon {
+  font-size: 1.6rem; /* Reduced icon size */
+  color: #8a8282; /* Default icon color */
+  transition: all 0.3s ease;
+}
+
+.icon-label {
+  font-size: 1.2rem; /* Reduced font size */
+  color: #57575e;
+  margin-top: 4px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 2px;
+}
+
+
+
+.nav-icon-wrapper.selected .nav-icon {
+  color: #5368f5;
+  transform: scale(1.1); /* Slightly reduced enlargement */
+}
+
+.nav-icon-wrapper.selected .icon-label {
+  color: #5368f5;
+  
+  border-bottom: 2px solid rgb(18, 167, 184);
+}
+
+/* Profile Section */
+.profile-section {
+  position: relative;
+}
+
+.profile-icon {
+  font-size: 2.5rem; /* Reduced profile icon size */
+  color: #007bff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profile-icon:hover {
+  transform: scale(1.05); /* Slightly smaller hover effect */
+}
+
+.profile-menu {
+  width: 200px;
+  position: absolute;
+  top: 40px; /* Reduced distance */
+  right: 0;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 8px 0;
+  animation: fadeIn 0.3s ease;
+}
+
+.profile-menu-item {
+  padding: 10px 18px; /* Reduced padding */
+  font-size: 0.9rem; /* Reduced font size */
+  color: #007bff;
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.profile-menu-item:hover {
+  background: #007bff;
+  color: #ffffff;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 0.9rem;
+  padding: 10px 18px; /* Reduced padding */
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.logout-btn:hover {
+  background: #007bff;
+  color: #ffffff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-icons {
+    gap: 15px; /* Reduced gap on smaller screens */
+  }
+
+  .nav-icon {
+    font-size: 1.4rem; /* Reduced icon size */
+  }
+
+  .icon-label {
+    font-size: 0.75rem; /* Reduced label font size */
+  }
+
+  .profile-icon {
+    font-size: 1.8rem; /* Reduced profile icon size */
+  }
+}

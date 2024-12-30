@@ -1,0 +1,299 @@
+/* Global styles for the page */
+.home-container {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url('https://source.unsplash.com/1600x900/?travel');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  padding: 60px 20px;
+  color: white;
+  text-align: center;
+  background-blend-mode: overlay;
+  background-color: rgba(255, 255, 255, 0.4); /* Lightened background */
+}
+
+.hero-container {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.hero-links {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 20px; /* Spacing between links and fields */
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url('https://source.unsplash.com/1600x900/?travel');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  padding: 60px 20px;
+  color: white;
+  text-align: center;
+  background-blend-mode: overlay;
+  background-color: rgba(255, 255, 255, 0.4); /* Lightened background */
+}
+
+.hero-container {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-btn:hover {
+  background-color: #45a049;
+}
+
+/* Profile Popup Styles */
+.profile-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.popup-content {
+  background-color: #fff;
+  border-radius: 15px;
+  width: 400px;
+  max-width: 90%;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards; /* Fade in animation */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.profile-popup.open {
+  opacity: 1;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-popup {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.close-popup:hover {
+  background-color: #cc3e3e;
+}
+
+.profile-details {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.edit-profile-btn {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-profile-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Form styles for editing profile */
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-profile-form input,
+.edit-profile-form select {
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form select:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+.edit-profile-form label {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .profile-popup {
+    padding: 15px;
+  }
+  
+  .popup-content {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .edit-profile-btn {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+}
+/* Edit and Save Button Styles */
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn {
+  background-color: #4CAF50; /* Green background for Edit */
+  color: white;
+}
+
+.save-btn {
+  background-color: #2196F3; /* Blue background for Save */
+  color: white;
+}
+
+button:hover {
+  opacity: 0.8; /* Slight opacity change on hover */
+}
+
+/* Profile Popup Specific Styles */
+.profile-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.close-popup:hover {
+  color: red;
+}
+.cancel-btn {
+  background-color: #ff6666;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.cancel-btn:hover {
+  background-color: #ff4c4c;
+}

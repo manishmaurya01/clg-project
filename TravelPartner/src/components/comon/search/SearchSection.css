@@ -1,0 +1,137 @@
+/* General Search Container Styling */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff; /* White background */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  width: 60%;
+  margin-top: -40px;
+  transition: transform 0.3s ease;
+}
+
+.search-container:hover {
+  transform: scale(1.03); /* Slight zoom-in effect */
+}
+
+/* Header Text - Selected Mode */
+.selected-mode {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007BFF; /* Blue */
+}
+
+/* Search Fields Styling */
+.search-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.field-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group input,
+.field-group select {
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #007BFF; /* Blue border */
+  background-color: transparent;
+  font-size: 1.1rem;
+  color: #333;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  outline: none;
+  border-color: #FF5733; /* Orange border on focus */
+  box-shadow: 0 0 10px rgba(255, 87, 51, 0.5); /* Orange glow */
+}
+
+.field-group label {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  font-size: 1.1rem;
+  color: #007BFF; /* Blue */
+  font-weight: 500;
+  background-color: #ffffff;
+  padding: 0 10px;
+  border-radius: 5px;
+}
+
+/* Button Styling */
+.search-btn,
+.search-btn-small {
+  padding: 18px;
+  background-color: #FF5733; /* Orange background */
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.search-btn:hover,
+.search-btn-small:hover {
+  background-color: #e74c3c; /* Darker orange */
+  transform: scale(1.05); /* Slight scaling effect */
+}
+
+.search-btn:active,
+.search-btn-small:active {
+  transform: scale(0.98); /* Scale down when clicked */
+}
+
+.search-btn-small {
+  font-size: 1.1rem;
+  padding: 14px;
+}
+
+/* Mode Button (for selecting travel modes like Flight, Train, etc.) */
+.mode-btn {
+  background-color: #f0f0f0; /* Light grey */
+  border: 1px solid #007BFF; /* Blue border */
+  padding: 10px;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  color: #007BFF; /* Blue text */
+  transition: background-color 0.3s ease;
+}
+
+.mode-btn.selected {
+  background-color: #007BFF; /* Blue background */
+  color: white; /* White text for selected mode */
+}
+
+.mode-btn:hover {
+  background-color: #FF5733; /* Orange background on hover */
+  color: white; /* White text on hover */
+}
+
+/* Responsive Styling for Smaller Screens */
+@media (max-width: 768px) {
+  .search-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .search-btn,
+  .search-btn-small {
+    font-size: 1.1rem;
+    padding: 15px;
+  }
+}
