@@ -106,17 +106,6 @@ const Profile = () => {
         </div>
       </div>
       <div className="profile-content">
-        <div className="profile-image-container">
-          <img
-            src={userDetails.profilePicture || '/default-profile.png'} // Fallback to default image if no profile picture
-            alt="Profile"
-            className="profile-image"
-          />
-          <div className="edit-icon" onClick={handleUpload}>
-            <span>Edit</span> {/* Replace with an edit icon if needed */}
-          </div>
-        </div>
-
         <div className="profile-info">
           <div className="profile-item">
             <strong>Name:</strong> {userDetails.name || 'N/A'}
@@ -133,14 +122,21 @@ const Profile = () => {
           <div className="profile-item">
             <strong>Account Type:</strong> {userDetails.accountType || 'N/A'}
           </div>
+
           {userDetails.accountType === 'business' && (
             <>
               <div className="profile-item">
                 <strong>Business Name:</strong> {userDetails.businessName || 'N/A'}
               </div>
+
+              {/* Handle services field */}
               <div className="profile-item">
-                <strong>Services Offered:</strong> {userDetails.services.join(', ') || 'N/A'}
+                <strong>Services Offered:</strong>
+                {Array.isArray(userDetails.services) && userDetails.services.length > 0
+                  ? userDetails.services.join(', ')
+                  : 'N/A'}
               </div>
+
               <div className="profile-item">
                 <strong>Business Hours:</strong> {userDetails.businessHours || 'N/A'}
               </div>
@@ -159,11 +155,11 @@ const Profile = () => {
             Edit Profile
           </button>
           <button className="logout-btn" onClick={() => auth.signOut()}>
-          Logout
-        </button>
+            Logout
+          </button>
         </div>
       </div>
-      
+
       {uploading && <div>Uploading...</div>}
     </div>
   );

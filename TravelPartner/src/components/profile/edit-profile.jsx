@@ -77,34 +77,42 @@ const ProfileEdit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    // Check for required fields if account type is "business"
+    if (formData.accountType === 'business') {
+      if (!formData.businessName || !formData.services || !formData.businessHours || !formData.location || !formData.website) {
+        alert('All business fields are required!');
+        return;
+      }
+    }
+
     try {
       const user = auth.currentUser;
       if (!user) {
         alert('User not logged in.');
         return;
       }
-  
+
       const userDoc = doc(db, 'registeredUsers', user.uid);
-  
+
       // Build the update object dynamically to exclude undefined fields
       const updatedData = {
         name: formData.name,
         phone: formData.phone,
         address: formData.address,
-        accountType: formData.accountType,
+        accountType: formData.accountType, // Account type remains unchanged
         services: formData.accountType === 'business' ? formData.services : '',
         businessName: formData.businessName,
         businessHours: formData.businessHours,
         location: formData.location,
         website: formData.website,
       };
-  
+
       // Include profilePicture only if it's updated from the default
       if (profilePicture !== '/default-profile.png') {
         updatedData.profilePicture = profilePicture;
       }
-  
+
       await updateDoc(userDoc, updatedData);
       navigate("/profile");
       alert('Profile updated successfully!');
@@ -125,14 +133,6 @@ const ProfileEdit = () => {
       </div>
       <form className="edit-profile-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="profile-picture">Profile Picture</label>
-          <div className="profile-image-upload">
-            <img id="profile-preview" src={profilePicture} alt="Profile Preview" />
-            <input type="file" id="profile-picture" accept="image/*" onChange={handleProfilePictureChange} />
-          </div>
-        </div>
-
-        <div className="form-group">
           <label htmlFor="name">Full Name</label>
           <input
             type="text"
@@ -140,6 +140,7 @@ const ProfileEdit = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Enter your full name"
+            required
           />
         </div>
 
@@ -162,6 +163,7 @@ const ProfileEdit = () => {
             value={formData.phone}
             onChange={handleInputChange}
             placeholder="Enter your phone number"
+            required
           />
         </div>
 
@@ -172,15 +174,13 @@ const ProfileEdit = () => {
             value={formData.address}
             onChange={handleInputChange}
             placeholder="Enter your address"
+            required
           />
         </div>
 
         <div className="form-group">
           <label htmlFor="accountType">Account Type</label>
-          <select id="accountType" value={formData.accountType} onChange={handleInputChange}>
-            <option value="user">User</option>
-            <option value="business">Business</option>
-          </select>
+          <div id="accountType">{formData.accountType}</div>
         </div>
 
         {formData.accountType === 'business' && (
@@ -193,18 +193,24 @@ const ProfileEdit = () => {
                 value={formData.businessName}
                 onChange={handleInputChange}
                 placeholder="Enter your business name"
+                required
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="services">Services Offered</label>
-              <input
-                type="text"
+              <select
                 id="services"
                 value={formData.services}
                 onChange={handleInputChange}
-                placeholder="Enter services offered"
-              />
+                required
+              >
+                <option value="">Select a service</option>
+                <option value="flight">Flight</option>
+                <option value="train">Train</option>
+                <option value="bus">Bus</option>
+                <option value="cab">Cab</option>
+              </select>
             </div>
 
             <div className="form-group">
@@ -215,6 +221,7 @@ const ProfileEdit = () => {
                 value={formData.businessHours}
                 onChange={handleInputChange}
                 placeholder="Enter your business hours"
+                required
               />
             </div>
 
@@ -226,6 +233,7 @@ const ProfileEdit = () => {
                 value={formData.location}
                 onChange={handleInputChange}
                 placeholder="Enter your business location"
+                required
               />
             </div>
 
@@ -237,6 +245,7 @@ const ProfileEdit = () => {
                 value={formData.website}
                 onChange={handleInputChange}
                 placeholder="Enter your business website"
+                required
               />
             </div>
           </>

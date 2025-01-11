@@ -194,12 +194,40 @@ const FlightPage = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);  
 
+  
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          setIsLoggedIn(true);
+          const userDocRef = doc(db, 'registeredUsers', user.uid);
+          getDoc(userDocRef).then((docSnap) => {
+            if (docSnap.exists()) {
+              setUserProfile(docSnap.data());
+              setEditProfileData(docSnap.data());
+            } else {
+              console.log('No profile data found');
+            }
+          }).catch((error) => {
+            console.error('Error fetching user profile: ', error);
+          });
+        } else {
+          setIsLoggedIn(false);
+          setUserProfile(null);
+        }
+      });
+  
+      return () => unsubscribe();
+    }, []);
+  
+    
+  
+
   return (
     <div className="page-container">
-      <Navbar 
-        isLoggedIn={isLoggedIn} 
-        handleLogout={handleLogout} 
-        toggleProfilePopup={toggleProfilePopup} 
+      <Navbar
+        isLoggedIn={isLoggedIn}
+        handleLogout={handleLogout}
+        toggleProfilePopup={toggleProfilePopup}
       />
 
       <div className="main-con">
