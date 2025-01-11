@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; 
 import '../navbar/Navbar.css';
 import { FaPlane, FaTrain, FaBus, FaTaxi, FaUserCircle } from 'react-icons/fa';
 
@@ -8,7 +8,7 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
     sessionStorage.getItem('selectedOption') || 'flight'
   );
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
-  const profileMenuRef = useRef(null); // Ref for the profile menu
+  const profileMenuRef = useRef(null);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -26,11 +26,8 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
   };
 
   useEffect(() => {
-    // Add event listener to close profile menu if clicked outside
     document.addEventListener('mousedown', closeProfileMenu);
-
     return () => {
-      // Clean up the event listener when the component unmounts
       document.removeEventListener('mousedown', closeProfileMenu);
     };
   }, []);
@@ -44,12 +41,10 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
 
   return (
     <nav className="navbar">
-      {/* Logo Section */}
       <div className="navbar-logo">
         <span className="logo-text">Travel Partner</span>
       </div>
 
-      {/* Navigation Icons */}
       <div className="nav-icons">
         {options.map((option) => (
           <div
@@ -65,7 +60,6 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
         ))}
       </div>
 
-      {/* Profile Section */}
       <div className="profile-section">
         <FaUserCircle
           className="profile-icon"
@@ -76,23 +70,15 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
           <div ref={profileMenuRef} className="profile-menu">
             {!isLoggedIn ? (
               <>
-                <Link to="/login" className="profile-menu-item">
-                  Login
-                </Link>
-                <Link to="/register" className="profile-menu-item">
-                  Signup
-                </Link>
+                <Link to="/login" className="profile-menu-item">Login</Link>
+                <Link to="/register" className="profile-menu-item">Signup</Link>
               </>
             ) : (
               <>
-                <Link to="/profile" className="profile-menu-item">
-                  View Profile
-                </Link>
-                <Link to="/profile/bookings" className="profile-menu-item">
-                  My Bookings
-                </Link>
+                <Link to="/profile" className="profile-menu-item">View Profile</Link>
+                <Link to="/profile/bookings" className="profile-menu-item">My Bookings</Link>
                 <button
-                  className="profile-menu-item logout-btn"
+                  className="profile-menu-item logout-btnn"
                   onClick={handleLogout}
                 >
                   Logout

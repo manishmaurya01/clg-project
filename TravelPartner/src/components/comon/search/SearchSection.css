@@ -13,9 +13,7 @@
   transition: transform 0.3s ease;
 }
 
-.search-container:hover {
-  transform: scale(1.03); /* Slight zoom-in effect */
-}
+
 
 /* Header Text - Selected Mode */
 .selected-mode {
@@ -73,7 +71,7 @@
 /* Button Styling */
 .search-btn,
 .search-btn-small {
-  padding: 18px;
+  padding: 20px;
   background-color: #FF5733; /* Orange background */
   color: white;
   font-size: 1.5rem;
@@ -81,14 +79,13 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
-  width: 100%;
+  width: 50%;
   margin-top: 20px;
 }
 
 .search-btn:hover,
 .search-btn-small:hover {
   background-color: #e74c3c; /* Darker orange */
-  transform: scale(1.05); /* Slight scaling effect */
 }
 
 .search-btn:active,

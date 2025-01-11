@@ -1,299 +1,264 @@
-/* Global styles for the page */
-.home-container {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f9;
-  color: #333;
-}
 
 /* Hero Section */
 .hero-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  background-image: url('https://source.unsplash.com/1600x900/?travel');
+  height: 60vh;
+  padding: 80px 20px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.685), rgba(0, 0, 0, 0.46)), url('../../../public/background.jpg');
   background-size: cover;
   background-position: center;
-  height: 100vh;
-  padding: 60px 20px;
+  text-align: left; /* Align text to the left */
   color: white;
-  text-align: center;
-  background-blend-mode: overlay;
-  background-color: rgba(255, 255, 255, 0.4); /* Lightened background */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+  flex-direction: row;
+}
+.search{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hero-container {
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-.hero-links {
-  display: flex;
-  gap: 50px;
-  margin-bottom: 20px; /* Spacing between links and fields */
-}
-
-/* Hero Section */
-.hero-section {
-  display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* Align content to the left */
   align-items: center;
   flex-direction: column;
-  background-image: url('https://source.unsplash.com/1600x900/?travel');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  padding: 60px 20px;
-  color: white;
-  text-align: center;
-  background-blend-mode: overlay;
-  background-color: rgba(255, 255, 255, 0.4); /* Lightened background */
+  text-align: left;
+  max-width: 50%; /* Limit container width to allow space for buttons */
+  margin-left: 50px; /* Optional: add some margin on the left */
 }
 
-.hero-container {
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
+.hero-container h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.hero-container p {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.tagline {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hero-buttons {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 }
 
-.profile-btn {
-  background-color: #4CAF50;
+.hero-container button {
+  background-color: #007bff;
   color: white;
-  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  padding: 15px 40px;
+  border-radius: 25px;
+  font-size: 1.1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-bottom: 20px; /* Space between buttons */
 }
 
-.profile-btn:hover {
-  background-color: #45a049;
+.hero-container button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
 }
 
-/* Profile Popup Styles */
+/* About Us Section */
+.about-us {
+  padding: 120px 20px;
+  text-align: center;
+  background-color: #f4f4f4;
+  display: flex;
+}
+
+.about-us-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-us h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.about-us p {
+  font-size: 1.2rem;
+  color: #777;
+  line-height: 1.8;
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+}
+
+.about-us-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.about-us-history,
+.about-us-mission,
+.about-us-values {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-us h3 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about-us-values ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.about-us-values li {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 10px 0;
+}
+
+.about-us-team {
+  margin-top: 40px;
+}
+
+.about-us-team h3 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+
+/* Profile Popup */
 .profile-popup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  transition: opacity 0.3s ease-in-out;
 }
 
 .popup-content {
-  background-color: #fff;
-  border-radius: 15px;
-  width: 400px;
-  max-width: 90%;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  width: 500px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   position: relative;
-  transition: transform 0.3s ease-in-out;
-  opacity: 0;
-  animation: fadeIn 0.5s forwards; /* Fade in animation */
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.profile-popup.open {
-  opacity: 1;
-}
-
-.profile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.popup-content h2 {
+  font-size: 2rem;
+  color: #333;
   margin-bottom: 20px;
 }
 
-.profile-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.close-popup {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+.popup-content .profile-details {
   font-size: 1.1rem;
-  transition: background-color 0.3s ease;
-}
-
-.close-popup:hover {
-  background-color: #cc3e3e;
-}
-
-.profile-details {
-  margin-top: 10px;
-  font-size: 1.2rem;
-  line-height: 1.6;
   color: #555;
+  margin-bottom: 30px;
 }
 
-.edit-profile-btn {
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
+.profile-details p {
+  margin-bottom: 15px;
 }
 
-.edit-profile-btn:hover {
-  background-color: #0056b3;
-}
-
-/* Form styles for editing profile */
-.edit-profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.edit-profile-form input,
-.edit-profile-form select {
-  padding: 12px;
+.profile-details input {
+  padding: 8px;
   font-size: 1rem;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 10px;
 }
 
-.edit-profile-form input:focus,
-.edit-profile-form select:focus {
-  border-color: #007BFF;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+.profile-details input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
-.edit-profile-form label {
-  font-weight: 600;
-  color: #333;
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  .profile-popup {
-    padding: 15px;
-  }
-  
-  .popup-content {
-    width: 100%;
-    padding: 15px;
-  }
-
-  .edit-profile-btn {
-    font-size: 1rem;
-    padding: 8px 15px;
-  }
-}
-/* Edit and Save Button Styles */
-.profile-details {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-button {
-  font-size: 16px;
+/* Profile Buttons */
+.popup-content button {
   padding: 10px 20px;
-  cursor: pointer;
+  background-color: #007bff;
+  color: white;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 10px;
 }
 
-.edit-btn {
-  background-color: #4CAF50; /* Green background for Edit */
-  color: white;
-}
-
-.save-btn {
-  background-color: #2196F3; /* Blue background for Save */
-  color: white;
-}
-
-button:hover {
-  opacity: 0.8; /* Slight opacity change on hover */
-}
-
-/* Profile Popup Specific Styles */
-.profile-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.popup-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
+.popup-content button:hover {
+  background-color: #0056b3;
 }
 
 .close-popup {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   background-color: transparent;
   border: none;
-  font-size: 18px;
-  color: #333;
+  font-size: 1.5rem;
+  color: #aaa;
   cursor: pointer;
-  font-weight: bold;
 }
 
 .close-popup:hover {
-  color: red;
-}
-.cancel-btn {
-  background-color: #ff6666;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 10px;
+  color: #333;
 }
 
-.cancel-btn:hover {
-  background-color: #ff4c4c;
+/* Footer */
+.footer {
+  background-color: #2C3E50;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  margin-top: 20px;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 20px;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #007bff;
+}
+
+/* Smooth Scroll for better navigation */
+html {
+  scroll-behavior: smooth;
 }
