@@ -53,9 +53,10 @@ function FlightPage() {
         <SearchSection
           selectedMode={selectedMode}
           handleModeSelect={handleModeSelect}
+           width="100%"
         />
       </section>
-      <h1 className="flight-page-header">Book Your Flight</h1>
+      <h1 className="flight-page-header">Book Your Flight With TravellPartner</h1>
       {flights.length > 0 ? (
         flights.map((flight) => {
           const departure = formatDateTime(flight.departureDateTime);

@@ -76,7 +76,6 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
             ) : (
               <>
                 <Link to="/profile" className="profile-menu-item">View Profile</Link>
-                <Link to="/profile/bookings" className="profile-menu-item">My Bookings</Link>
                 <button
                   className="profile-menu-item logout-btnn"
                   onClick={handleLogout}

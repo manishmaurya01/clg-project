@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db } from '../../../firebase/firebaseConfig'; // Ensure this points to your Firebase config file
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
-const SearchSection = ({ showSearch = true, onSearch = false, newsearch = false }) => {
+const SearchSection = ({ showSearch = true, onSearch = false, newsearch = false,  width = '70%' }) => {
   const navigate = useNavigate();
 
   // Initialize selectedMode from sessionStorage
@@ -131,7 +131,7 @@ const SearchSection = ({ showSearch = true, onSearch = false, newsearch = false 
   };
 
   return (
-    <div className="search-container">
+    <div className="search-container" style={{ width: width }} >
       {/* Search Fields */}
       <div className="search-fields">
         <div className="field-group">
