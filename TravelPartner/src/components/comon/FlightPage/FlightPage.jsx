@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../../firebase/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import './FlightPage.css';
-import { FaPlaneDeparture, FaPlaneArrival, FaClock } from 'react-icons/fa';
 import SearchSection from '../search/Search-Section';
 
 function FlightPage() {
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
-const [selectedMode, setSelectedMode] = useState('flight');
+  const [selectedMode, setSelectedMode] = useState('flight');
+
   useEffect(() => {
     const fetchFlights = async () => {
       try {
@@ -25,6 +25,7 @@ const [selectedMode, setSelectedMode] = useState('flight');
 
     fetchFlights();
   }, []);
+
   const handleModeSelect = (mode) => {
     setSelectedMode(mode);
   };
@@ -40,15 +41,20 @@ const [selectedMode, setSelectedMode] = useState('flight');
     return <p style={{ textAlign: 'center', marginTop: '50px' }}>Loading flight details...</p>;
   }
 
+  const handleBookNow = (flightId) => {
+    const url = `/book-flight/${flightId}`;
+    window.open(url, '_blank'); // Open booking page in a new tab
+  };
+
   return (
     <div className="flight-page-container">
       <section className="search">
-   {/* Search Container */}
-          <SearchSection
-            selectedMode={selectedMode}
-            handleModeSelect={handleModeSelect}
-          />
-</section>
+        {/* Search Container */}
+        <SearchSection
+          selectedMode={selectedMode}
+          handleModeSelect={handleModeSelect}
+        />
+      </section>
       <h1 className="flight-page-header">Book Your Flight</h1>
       {flights.length > 0 ? (
         flights.map((flight) => {
@@ -62,23 +68,28 @@ const [selectedMode, setSelectedMode] = useState('flight');
               </div>
               <div className="starting">
                 <strong>{flight.departureCode}</strong>
-                <hr className='line'/>
-                <span className="date">{departure.date},{departure.time}</span>
-                </div>
+                <hr className="line" />
+                <span className="date">{departure.date}, {departure.time}</span>
+              </div>
               <div className="middle">
                 <span>{flight.airline}</span>
                 <span>{flight.duration}</span>
-                <span>{flight.isDirect ? "Non Stop" : "Stopover"}</span>
+                <span>{flight.isDirect ? 'Non Stop' : 'Stopover'}</span>
               </div>
               <div className="ending">
                 <strong>{flight.arrivalCode}</strong>
-                <hr className='line'/>
+                <hr className="line" />
                 <span className="date">{arrival.date}, {arrival.time}</span>
-              
               </div>
               <div className="price_actions">
-                <strong>{flight.ticketPrice}</strong>
-                <button className='book_now_btn'>Book Now</button>
+                <strong>{flight.ticketPrice} </strong>
+                <span>Economy Class</span>
+                <button
+                  className="book_now_btn"
+                  onClick={() => handleBookNow(flight.id)}
+                >
+                  Book Now
+                </button>
               </div>
             </div>
           );

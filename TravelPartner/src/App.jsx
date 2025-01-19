@@ -11,6 +11,7 @@ import TrainPage from  './components/comon/TrainPage/TrainPage'
 import AdminPage from './components/admin/AdminPage';
 import Profile from './components/profile/profile';
 import ProfileEdit from './components/profile/edit-profile';
+import FlightBooking from './components/comon/FlightBooking/FlightBooking';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/flight" element={<FlightPage />} />
         <Route path="/bus" element={<BusPage />} />
         <Route path="/train" element={<TrainPage />} />
+        <Route path="/book-flight/:flightId" element={<FlightBooking />} />
       </Routes>
     </Router>
     </AuthProvider>

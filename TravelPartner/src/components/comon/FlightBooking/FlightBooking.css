@@ -1,0 +1,206 @@
+/* General Styling for the Booking Page */
+.flight-booking-container {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    padding: 40px;
+    max-width: 900px;
+    margin: 50px auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Header Section */
+.booking-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.main-title {
+    font-size: 38px;
+    font-weight: 700;
+    color: #ff4081;
+    margin-bottom: 15px;
+}
+
+.flight-number {
+    font-size: 18px;
+    color: #cfcfcf;
+}
+
+.flight-number span {
+    font-weight: bold;
+    color: #ff4081;
+}
+
+/* Flight Summary Section */
+.flight-summary {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.flight-summary .flight-details {
+    width: 65%;
+}
+
+.flight-summary .flight-details h2 {
+    font-size: 30px;
+    color: #ff4081;
+}
+
+.flight-summary .price-section {
+    width: 30%;
+    text-align: center;
+    padding: 25px;
+    background-color: #263238;
+    border-radius: 12px;
+}
+
+.flight-summary .price-section h3 {
+    font-size: 34px;
+    color: #ff4081;
+}
+
+.book-now-btn {
+    background-color: #ff4081;
+    color: white;
+    padding: 16px 28px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.book-now-btn:hover {
+    background-color: #f50057;
+}
+
+/* Options Section */
+.options-section {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.options-section h3 {
+    font-size: 24px;
+    color: #ff4081;
+    margin-bottom: 20px;
+}
+
+.options-section .option {
+    margin-bottom: 20px;
+}
+
+.options-section label {
+    font-size: 16px;
+    color: #fff;
+}
+
+.options-section select,
+.options-section input[type="checkbox"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background-color: #263238;
+    border: 1px solid #37474f;
+    color: #ddd;
+    font-size: 16px;
+}
+
+/* Seat Map */
+.seat-selection-section{
+    width: 90%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.seat-map {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 15px;
+    justify-content: center;
+    margin: 20px;
+}
+
+.seat {
+    width: 55px;
+    height: 55px;
+    background-color: #cfcfcf;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 55px;
+    cursor: pointer;
+}
+
+.seat.reserved {
+    background-color: #f44336;
+    pointer-events: none;
+}
+
+.seat.selected {
+    background-color: #4caf50;
+}
+
+.seat:hover {
+    background-color: #80e27e;
+}
+
+/* Error and Loading Messages */
+.loading-message,
+.error-message {
+    text-align: center;
+    font-size: 18px;
+    color: #ff4081;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .flight-summary {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .flight-summary .flight-details,
+    .flight-summary .price-section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .options-section {
+        width: 100%;
+    }
+
+    .seat-map {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .seat-map {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .seat {
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+        line-height: 45px;
+    }
+
+    .main-title {
+        font-size: 28px;
+    }
+}
