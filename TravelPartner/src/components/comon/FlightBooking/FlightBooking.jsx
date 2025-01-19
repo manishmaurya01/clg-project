@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../../../firebase/firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { useAuth } from '../../AuthContext'; // Import the AuthContext to get user details
 import './FlightBooking.css';
 
 function FlightBooking() {
   const { flightId } = useParams();
+  const { user } = useAuth(); // Get logged-in user from AuthContext
   const [flight, setFlight] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
-    classType: 'Economy', // Default class type
+    classType: 'Economy',
     mealPreference: '',
     getOffers: false,
   });
   const [selectedClassPrice, setSelectedClassPrice] = useState(0);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    address: '',
+    phone: '',
+    registrationDate: '',
+  });
+  const [bookingTime, setBookingTime] = useState(null); // To store and display booking time
 
   useEffect(() => {
     const fetchFlight = async () => {
@@ -35,6 +45,37 @@ function FlightBooking() {
 
     fetchFlight();
   }, [flightId]);
+
+  // Fetch user data from Firestore if logged in
+  useEffect(() => {
+    if (user) {
+      setUserData((prevData) => ({
+        ...prevData,
+        email: user.email,  // Get email from Firebase Authentication
+      }));
+
+      // Fetch user name and other details from the registeredUsers collection
+      const fetchUserDetails = async () => {
+        try {
+          const userDoc = doc(db, 'registeredUsers', user.uid); // Fetch details from the registeredUsers collection
+          const userDetails = await getDoc(userDoc);
+          if (userDetails.exists()) {
+            setUserData((prevData) => ({
+              ...prevData,
+              name: userDetails.data().name || '',
+              address: userDetails.data().address || '',
+              phone: userDetails.data().phone || '',
+              registrationDate: userDetails.data().registrationDate || '',
+            }));
+          }
+        } catch (error) {
+          console.error('Error fetching user details:', error);
+        }
+      };
+
+      fetchUserDetails();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (flight) {
@@ -73,11 +114,81 @@ function FlightBooking() {
     });
   };
 
-  const handleProceed = () => {
+  const handleProceed = async () => {
     if (selectedSeats.length === 0) {
       alert('Please select your seats.');
-    } else {
+      return;
+    }
+
+    // Check if any selected seat is already reserved
+    const reservedSeats = selectedSeats.filter((seat) =>
+      flight.classTypes
+        .find((type) => type.classType === formData.classType)
+        .seats.some((s) => s.seatNumber === seat && s.status === 'reserved')
+    );
+
+    if (reservedSeats.length > 0) {
+      alert('One or more selected seats are already reserved.');
+      return;
+    }
+
+    // Proceed with booking
+    try {
+      const updatedSeats = flight.classTypes.map((classType) => {
+        if (classType.classType === formData.classType) {
+          classType.seats = classType.seats.map((seat) => {
+            if (selectedSeats.includes(seat.seatNumber)) {
+              return { ...seat, status: 'reserved', bookedBy: userData.name, email: userData.email };
+            }
+            return seat;
+          });
+        }
+        return classType;
+      });
+
+      // Update flight data with the new seat reservations
+      const flightRef = doc(db, 'flights', flightId);
+      await updateDoc(flightRef, {
+        classTypes: updatedSeats,
+      });
+
+      // Create a new booking document in the 'flightBookings' collection
+      const flightBookingData = {
+        flightDetails: {
+          flightNumber: flight.flightNumber,
+          airline: flight.airline,
+          from: flight.from,
+          to: flight.to,
+          departureCode: flight.departureCode,
+          arrivalCode: flight.arrivalCode,
+          duration: flight.duration,
+          classType: formData.classType,
+          selectedSeats: selectedSeats,
+          mealPreference: formData.mealPreference,
+          price: selectedClassPrice,
+          baggageAllowance: flight.classTypes.find(type => type.classType === formData.classType).baggageAllowance,
+        },
+        userDetails: {
+          accountType: 'user',
+          name: userData.name,
+          email: userData.email,
+          address: userData.address,
+          phone: userData.phone,
+          registrationDate: userData.registrationDate,
+        },
+        bookingTime: serverTimestamp(), // Add the current server timestamp for booking time
+      };
+
+      // Add the booking to the Firestore 'flightBookings' collection
+      const bookingDocRef = await addDoc(collection(db, 'flightBookings'), flightBookingData);
+
+      // Fetch the booking document to get the booking time after it's created
+      const bookingDoc = await getDoc(bookingDocRef);
+      setBookingTime(bookingDoc.data().bookingTime.toDate().toLocaleString()); // Convert the timestamp to a readable format
+
       alert('Booking Confirmed! Your seats: ' + selectedSeats.join(', '));
+    } catch (error) {
+      console.error('Error updating booking:', error);
     }
   };
 
@@ -105,10 +216,11 @@ function FlightBooking() {
             <p><strong>To:</strong> {flight.to} ({flight.arrivalCode})</p>
             <p><strong>Airport:</strong> {flight.arrivalAirport}</p>
             <p><strong>Duration:</strong> {flight.duration}</p>
+            <p><strong>Is Direct:</strong> {flight.isDirect ? 'Non Stop' : 'Stopover'}</p>
           </div>
           <div className="price-section">
             <h3>₹{selectedClassPrice}</h3>
-            <p className="additional-charges">{flight.additionalCharges}</p>
+            <p className="additional-charges">{flight.classTypes.find(type => type.classType === formData.classType).baggageAllowance}</p>
             <button
               type="button"
               className="book-now-btn"
@@ -145,25 +257,22 @@ function FlightBooking() {
 
           {/* Class Type Dropdown */}
           <div className="option">
-            
             <select
               name="classType"
               value={formData.classType}
               onChange={handleClassTypeChange}
             >
               <option value="Economy">Economy</option>
-              {flight.classTypes &&
-                flight.classTypes.map((classOption, index) => (
-                  <option key={index} value={classOption.classType}>
-                    {classOption.classType}
-                  </option>
-                ))}
+              {flight.classTypes.map((classOption, index) => (
+                <option key={index} value={classOption.classType}>
+                  {classOption.classType}
+                </option>
+              ))}
             </select>
           </div>
 
           {/* Meal Preference Dropdown */}
           <div className="option">
-           
             <select
               name="mealPreference"
               value={formData.mealPreference}
@@ -173,8 +282,14 @@ function FlightBooking() {
               <option value="Non-Veg">Non-Vegetarian</option>
             </select>
           </div>
-
         </div>
+
+        {/* Display the booking time after confirmation */}
+        {bookingTime && (
+          <div className="booking-time-section">
+            <p>Booking Time: {bookingTime}</p>
+          </div>
+        )}
       </form>
     </div>
   );
