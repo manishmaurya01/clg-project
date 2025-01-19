@@ -1,333 +1,93 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Navbar from '../navbar/Navbar';
-import SearchSection from '../search/Search-Section';
-import { auth } from '../../../firebase/firebaseConfig';
-import { doc, getDoc, updateDoc, collection, getDocs, query, where } from 'firebase/firestore';
-import { useAuth } from '../../AuthContext';
+import React, { useEffect, useState } from 'react';
 import { db } from '../../../firebase/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 import './FlightPage.css';
+import { FaPlaneDeparture, FaPlaneArrival, FaClock } from 'react-icons/fa';
+import SearchSection from '../search/Search-Section';
 
-const FlightPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editProfileData, setEditProfileData] = useState({});
-  const [showProfilePopup, setShowProfilePopup] = useState(false);
-  const [flights, setFlights] = useState([]); // State for flight data
-  const [selectedFlight, setSelectedFlight] = useState(null); // State to store selected flight for details
-  const { user } = useAuth();
-  const popupRef = useRef(null);
-
-  const getSearchCriteriaFromSession = () => {
-    const travelClass = sessionStorage.getItem('travelClass')?.toUpperCase();
-    const from = sessionStorage.getItem('from')?.toUpperCase();
-    const to = sessionStorage.getItem('to')?.toUpperCase();
-    const departure = sessionStorage.getItem('departure');
-    const arrival = sessionStorage.getItem('arrival');
-  
-    return { travelClass, from, to, departure, arrival };
-  };
-  
-  const handleSearch = async () => {
-    const { from, to, departure, arrival, travelClass } = getSearchCriteriaFromSession();
-  
-    // Helper function to convert mm/dd/yy to yyyy-mm-dd format
-    const formatDateToYYYYMMDD = (dateStr) => {
-      const [month, day, year] = dateStr.split('/');
-      return `${2000 + parseInt(year)}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    };
-  
-    try {
-      const flightCollectionRef = collection(db, 'flights');
-      let flightQuery = query(flightCollectionRef);
-  
-      // Convert session data to uppercase for query comparison
-      if (from) {
-        flightQuery = query(flightQuery, where('sourceAirport', '>=', from.toUpperCase()), where('sourceAirport', '<=', from.toUpperCase() + '\uf8ff'));
-      }
-      if (to) {
-        flightQuery = query(flightQuery, where('destinationAirport', '>=', to.toUpperCase()), where('destinationAirport', '<=', to.toUpperCase() + '\uf8ff'));
-      }
-  
-      if (departure) {
-        // Convert session date (mm/dd/yy) to yyyy-mm-dd
-        const formattedDepartureDate = formatDateToYYYYMMDD(departure);
-        
-        // Compare the formatted departure date with Firebase departureTime (yyyy-mm-dd)
-        flightQuery = query(flightQuery, where('departureTime', '>=', new Date(formattedDepartureDate).getTime()));
-      }
-  
-      if (arrival) {
-        // Convert session date (mm/dd/yy) to yyyy-mm-dd
-        const formattedArrivalDate = formatDateToYYYYMMDD(arrival);
-        
-        // Compare the formatted arrival date with Firebase arrivalTime (yyyy-mm-dd)
-        flightQuery = query(flightQuery, where('arrivalTime', '>=', new Date(formattedArrivalDate).getTime()));
-      }
-  
-      if (travelClass) {
-        flightQuery = query(flightQuery, where('travelClass', '==', travelClass.toUpperCase())); // Ensure travelClass is uppercase
-      }
-  
-      const flightSnapshot = await getDocs(flightQuery);
-      const flightList = flightSnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        flightId: doc.id, // Include the flight ID from Firestore
-      }));
-  
-      setFlights(flightList);
-    } catch (error) {
-      console.error('Error fetching flights:', error);
-    }
-  };
-  
-  
-
-  // Fetch initial flights and apply filters
+function FlightPage() {
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(true);
+const [selectedMode, setSelectedMode] = useState('flight');
   useEffect(() => {
     const fetchFlights = async () => {
       try {
-        const flightCollectionRef = collection(db, 'flights');
-        const flightSnapshot = await getDocs(flightCollectionRef);
-        
-        // Map through the flight data and ensure these fields are in uppercase
-        const flightList = flightSnapshot.docs.map(doc => ({
-          ...doc.data(),
-          flightId: doc.id,
-          sourceCity: doc.data().sourceCity?.toUpperCase(),
-          destinationCity: doc.data().destinationCity?.toUpperCase(),
-          travelClass: doc.data().travelClass?.toUpperCase(),
-        }));
-    
-        // Now filter the flights based on the sessionStorage criteria
-        const { travelClass, from, to, departure } = getSearchCriteriaFromSession();
-        let filteredFlights = flightList;
-    
-        if (from) {
-          filteredFlights = filteredFlights.filter(flight =>
-            flight.sourceCity.includes(from)
-          );
-        }
-        if (to) {
-          filteredFlights = filteredFlights.filter(flight =>
-            flight.destinationCity.includes(to)
-          );
-        }
-        if (departure) {
-          filteredFlights = filteredFlights.filter(flight =>
-            new Date(flight.departureTime).toLocaleDateString() === new Date(departure).toLocaleDateString()
-          );
-        }
-        if (travelClass) {
-          filteredFlights = filteredFlights.filter(flight =>
-            flight.travelClass === travelClass
-          );
-        }
-    
-        setFlights(filteredFlights);
+        const flightsCollection = collection(db, 'flights');
+        const flightDocs = await getDocs(flightsCollection);
+        const flightData = flightDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setFlights(flightData);
       } catch (error) {
-        console.error('Error fetching flights:', error);
+        console.error('Error fetching flight data:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    
 
     fetchFlights();
-  }, []); // Empty dependency array ensures this runs once when the component mounts
-
-  useEffect(() => {
-    // Listen for sessionStorage changes and trigger search if any change occurs
-    const interval = setInterval(() => {
-      handleSearch();
-    }, 1000); // Check every 1 second for changes
-
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, []); // Only run once on mount
-
-  const handleLogout = () => {
-    auth.signOut().then(() => {
-      setIsLoggedIn(false);
-    }).catch((error) => console.error('Error logging out:', error));
+  }, []);
+  const handleModeSelect = (mode) => {
+    setSelectedMode(mode);
   };
 
-  const toggleProfilePopup = () => setShowProfilePopup((prev) => !prev);
-
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditProfileData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const formatDateTime = (dateTime) => {
+    const date = new Date(dateTime);
+    const formattedDate = date.toLocaleDateString();
+    const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return { date: formattedDate, time: formattedTime };
   };
 
-  const handleSaveProfile = async () => {
-    if (user) {
-      try {
-        const userDocRef = doc(db, 'registeredUsers', user.uid);
-        await updateDoc(userDocRef, editProfileData);
-        setIsEditing(false);
-        setUserProfile(editProfileData);
-      } catch (error) {
-        console.error('Error updating profile:', error);
-      }
-    }
-  };
-
-  const handleCancelChanges = () => {
-    setEditProfileData(userProfile);
-    setIsEditing(false);
-  };
-
-  const handleFlightDetails = (flight) => {
-    setSelectedFlight(flight);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (popupRef.current && !popupRef.current.contains(e.target)) {
-        setShowProfilePopup(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);  
-
-  
-    useEffect(() => {
-      const unsubscribe = auth.onAuthStateChanged((user) => {
-        if (user) {
-          setIsLoggedIn(true);
-          const userDocRef = doc(db, 'registeredUsers', user.uid);
-          getDoc(userDocRef).then((docSnap) => {
-            if (docSnap.exists()) {
-              setUserProfile(docSnap.data());
-              setEditProfileData(docSnap.data());
-            } else {
-              console.log('No profile data found');
-            }
-          }).catch((error) => {
-            console.error('Error fetching user profile: ', error);
-          });
-        } else {
-          setIsLoggedIn(false);
-          setUserProfile(null);
-        }
-      });
-  
-      return () => unsubscribe();
-    }, []);
-  
-    
-  
+  if (loading) {
+    return <p style={{ textAlign: 'center', marginTop: '50px' }}>Loading flight details...</p>;
+  }
 
   return (
-    <div className="page-container">
-      <Navbar
-        isLoggedIn={isLoggedIn}
-        handleLogout={handleLogout}
-        toggleProfilePopup={toggleProfilePopup}
-      />
+    <div className="flight-page-container">
+      <section className="search">
+   {/* Search Container */}
+          <SearchSection
+            selectedMode={selectedMode}
+            handleModeSelect={handleModeSelect}
+          />
+</section>
+      <h1 className="flight-page-header">Book Your Flight</h1>
+      {flights.length > 0 ? (
+        flights.map((flight) => {
+          const departure = formatDateTime(flight.departureDateTime);
+          const arrival = formatDateTime(flight.arrivalDateTime);
 
-      <div className="main-con">
-        <SearchSection showSearch={false} newsearch={true} showModeSelection={false} />
-
-        {/* Flight List Section */}
-        <div className="flight-list-section">
-          <h2>Available Flights</h2>
-          <div className="flight-list">
-            {flights.length > 0 ? (
-              flights.map((flight) => (
-                <div key={flight.flightId} className="flight-item">
-                  <div className="flight-header">
-                    <h3 className="airline-name">{flight.airlineName}</h3>
-                    <p className="flight-number">Flight No: {flight.flightNumber}</p>
-                  </div>
-                  <div className="flight-info">
-                    <div className="company-logo">
-                      <img src="https://akm-img-a-in.tosshub.com/businesstoday/images/story/202302/ezgif-sixteen_nine_336.jpg?size=1280:720" alt="" />
-                    </div>
-                    <div className="details">
-                      <div className="flight-detail">
-                        <span className="value">{new Date(flight.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                        <hr className="hr" />
-                        <span className="value">{flight.sourceAirport}, {flight.sourceCity}</span>
-                      </div>
-                      <div className="flight-detail">
-                        <span className="value">{flight.flightDuration}</span>
-                        <hr className="hr" />
-                        <span className="value">{flight.flightType}</span>
-                      </div>
-                      <div className="flight-detail">
-                        <span className="value">{new Date(flight.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                        <hr className="hr" />
-                        <span className="value">{flight.destinationAirport}, {flight.destinationCity}</span>
-                      </div>
-                    </div>
-                    <div className="last">
-                      <div className="flight-detail">
-                        <span className="value">₹{flight.price}</span>
-                      </div>
-                      <button className="see-details-btn" onClick={() => handleFlightDetails(flight)}>See Details</button>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No flights available at the moment.</p>
-            )}
-          </div>
-        </div>
-
-        {/* Full-Screen Flight Details Popup */}
-        {selectedFlight && (
-          <>
-            <div className="popup-overlay" onClick={() => setSelectedFlight(null)}></div>
-            <div className="flight-details-popup">
-              <div className="popup-header">
-                <h2>Flight Details</h2>
-                <button className="close-popup" onClick={() => setSelectedFlight(null)}>×</button>
+          return (
+            <div key={flight.id} className="flight-card">
+              <div className="company_logo">
+                <img src="https://img.freepik.com/premium-vector/airlines-logo-design-vector-template_1070930-13.jpg" alt="Airline Logo" />
               </div>
-              <div className="popup-content">
-                {/* Flight Info */}
-                <div className="flight-info">
-                  <div className="flight-code">{selectedFlight.flightNumber}</div>
-                  <div className="flight-status">{selectedFlight.currentStatus || 'Scheduled'}</div>
-                  <p><strong>Airline:</strong> {selectedFlight.airlineName}</p>
-                  <p><strong>Flight Type:</strong> {selectedFlight.flightType}</p>
-                  <p><strong>Gate:</strong> {selectedFlight.gateNumber}</p>
-                  <p><strong>Aircraft:</strong> {selectedFlight.aircraftType}</p>
+              <div className="starting">
+                <strong>{flight.departureCode}</strong>
+                <hr className='line'/>
+                <span className="date">{departure.date},{departure.time}</span>
                 </div>
-                {/* Flight Times and Details */}
-                <div className="flight-times">
-                  <div className="time-block">
-                    <i className="fas fa-plane-departure"></i> {/* Icon for Departure */}
-                    <p className="time">{new Date(selectedFlight.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                    <p className="location">{selectedFlight.sourceAirport}, {selectedFlight.sourceCity}</p>
-                  </div>
-                  <div className="flight-duration">
-                    Duration: {selectedFlight.flightDuration} hr(s)
-                  </div>
-                  <div className="time-block">
-                    <i className="fas fa-plane-arrival"></i> {/* Icon for Arrival */}
-                    <p className="time">{new Date(selectedFlight.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                    <p className="location">{selectedFlight.destinationAirport}, {selectedFlight.destinationCity}</p>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="action-buttons">
-                  <button className="book-btn">Book Now</button>
-                  <button className="cancel-btn" onClick={() => setSelectedFlight(null)}>Cancel</button>
-                </div>
+              <div className="middle">
+                <span>{flight.airline}</span>
+                <span>{flight.duration}</span>
+                <span>{flight.isDirect ? "Non Stop" : "Stopover"}</span>
+              </div>
+              <div className="ending">
+                <strong>{flight.arrivalCode}</strong>
+                <hr className='line'/>
+                <span className="date">{arrival.date}, {arrival.time}</span>
+              
+              </div>
+              <div className="price_actions">
+                <strong>{flight.ticketPrice}</strong>
+                <button className='book_now_btn'>Book Now</button>
               </div>
             </div>
-          </>
-        )}
-      </div>
+          );
+        })
+      ) : (
+        <p style={{ textAlign: 'center', marginTop: '50px' }}>No flights available.</p>
+      )}
     </div>
   );
-};
+}
 
 export default FlightPage;
