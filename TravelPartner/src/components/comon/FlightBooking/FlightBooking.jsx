@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { db } from '../../../firebase/firebaseConfig';
 import { doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../../AuthContext'; // Import the AuthContext to get user details
@@ -8,6 +8,7 @@ import './FlightBooking.css';
 function FlightBooking() {
   const { flightId } = useParams();
   const { user } = useAuth(); // Get logged-in user from AuthContext
+  const navigate = useNavigate(); // Initialize useNavigate
   const [flight, setFlight] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
@@ -161,6 +162,8 @@ function FlightBooking() {
           to: flight.to,
           departureCode: flight.departureCode,
           arrivalCode: flight.arrivalCode,
+          arrivalDateTime: flight.arrivalDateTime,
+          departureDateTime: flight.departureDateTime,
           duration: flight.duration,
           classType: formData.classType,
           selectedSeats: selectedSeats,
@@ -187,6 +190,10 @@ function FlightBooking() {
       setBookingTime(bookingDoc.data().bookingTime.toDate().toLocaleString()); // Convert the timestamp to a readable format
 
       alert('Booking Confirmed! Your seats: ' + selectedSeats.join(', '));
+
+      // Navigate to /profile page after booking confirmation
+      navigate('/profile');
+      
     } catch (error) {
       console.error('Error updating booking:', error);
     }

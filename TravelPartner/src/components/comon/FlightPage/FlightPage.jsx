@@ -67,7 +67,7 @@ function FlightPage() {
                 <img src="https://img.freepik.com/premium-vector/airlines-logo-design-vector-template_1070930-13.jpg" alt="Airline Logo" />
               </div>
               <div className="starting">
-                <strong>{flight.departureCode}</strong>
+                <strong>{flight.from}</strong>
                 <hr className="line" />
                 <span className="date">{departure.date}, {departure.time}</span>
               </div>
@@ -77,7 +77,7 @@ function FlightPage() {
                 <span>{flight.isDirect ? 'Non Stop' : 'Stopover'}</span>
               </div>
               <div className="ending">
-                <strong>{flight.arrivalCode}</strong>
+                <strong>{flight.to}</strong>
                 <hr className="line" />
                 <span className="date">{arrival.date}, {arrival.time}</span>
               </div>

@@ -44,28 +44,28 @@ const AdminPage = () => {
           },
           seats: [
             { seatNumber: '1A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '1B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '1B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '1C', seatPosition: 'Middle', status: 'available' },
-            { seatNumber: '2A', seatPosition: 'Window', status: 'reserved' },
+            { seatNumber: '2A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '2B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '2C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '3A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '3B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '3B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '3C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '4A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '4B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '4C', seatPosition: 'Middle', status: 'available' },
-            { seatNumber: '5A', seatPosition: 'Window', status: 'reserved' },
-            { seatNumber: '5B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '5A', seatPosition: 'Window', status: 'available' },
+            { seatNumber: '5B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '5C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '6A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '6B', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '6C', seatPosition: 'Middle', status: 'reserved' },
+            { seatNumber: '6C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '7A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '7B', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '7C', seatPosition: 'Middle', status: 'reserved' },
-            { seatNumber: '8A', seatPosition: 'Window', status: 'reserved' },
-            { seatNumber: '8B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '7C', seatPosition: 'Middle', status: 'available' },
+            { seatNumber: '8A', seatPosition: 'Window', status: 'available' },
+            { seatNumber: '8B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '8C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '9A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '9B', seatPosition: 'Aisle', status: 'available' },
@@ -91,138 +91,99 @@ const AdminPage = () => {
           },
           seats: [
             { seatNumber: '1A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '1B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '1B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '1C', seatPosition: 'Middle', status: 'available' },
-            { seatNumber: '2A', seatPosition: 'Window', status: 'reserved' },
+            { seatNumber: '2A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '2B', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '2C', seatPosition: 'Middle', status: 'reserved' },
+            { seatNumber: '2C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '3A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '3B', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '3C', seatPosition: 'Middle', status: 'reserved' },
-            { seatNumber: '4A', seatPosition: 'Window', status: 'reserved' },
+            { seatNumber: '3C', seatPosition: 'Middle', status: 'available' },
+            { seatNumber: '4A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '4B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '4C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '5A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '5B', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '5C', seatPosition: 'Middle', status: 'reserved' },
+            { seatNumber: '5C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '6A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '6B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '6B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '6C', seatPosition: 'Middle', status: 'available' },
-            { seatNumber: '7A', seatPosition: 'Window', status: 'reserved' },
+            { seatNumber: '7A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '7B', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '7C', seatPosition: 'Middle', status: 'reserved' },
+            { seatNumber: '7C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '8A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '8B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '8B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '8C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '9A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '9B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '9B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '9C', seatPosition: 'Middle', status: 'available' }
           ]
         }
       ]
     },
+    // More flights added below
     {
-      flightNumber: '6E-505',
-      ticketPrice: 3200,
-      airline: 'IndiGo',
-      from: 'Bangalore',
-      to: 'Chennai',
-      departureAirport: 'Kempegowda International Airport',
-      departureCode: 'BLR',
-      arrivalAirport: 'Chennai International Airport',
-      arrivalCode: 'MAA',
-      departureDateTime: '2025-01-16T14:00:00',
-      arrivalDateTime: '2025-01-16T15:30:00',
+      flightNumber: 'AI-203',
+      ticketPrice: 5300,
+      airline: 'Air India',
+      from: 'Kolkata',
+      to: 'Hyderabad',
+      departureAirport: 'Netaji Subhash Chandra Bose International Airport',
+      departureCode: 'CCU',
+      arrivalAirport: 'Rajiv Gandhi International Airport',
+      arrivalCode: 'HYD',
+      departureDateTime: '2025-01-17T10:00:00',
+      arrivalDateTime: '2025-01-17T12:00:00',
       isDirect: true,
       stopoverDetails: null,
-      duration: '1h 30m',
+      duration: '2h 00m',
       classTypes: [
         {
           classType: 'Economy',
-          ticketPrice: 3200,
+          ticketPrice: 5300,
           baggageAllowance: '15kg check-in, 7kg cabin',
-          availableSeats: 'Aisle',
-          inFlightAmenities: 'Snacks available for purchase',
+          availableSeats: 'Window, Aisle',
+          inFlightAmenities: 'Snacks, Water',
           mealPreferences: 'Veg',
           covidGuidelines: 'Mask mandatory',
-          checkInTime: '1.5 hours before departure',
-          paymentOptions: 'Wallet, Card',
-          cancellationPolicy: 'Non-refundable',
-          offers: 'Flat ₹200 cashback on Paytm',
-          seatPricing: {
-            aisle: 3200
-          },
-          seats: [
-            { seatNumber: '1A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '1B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '2A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '2B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '3A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '3B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '4A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '4B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '5A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '5B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '6A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '6B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '7A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '7B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '8A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '8B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '9A', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '9B', seatPosition: 'Aisle', status: 'reserved' }
-          ]
-        },
-        {
-          classType: 'Business',
-          ticketPrice: 7200,
-          baggageAllowance: '25kg check-in, 10kg cabin',
-          availableSeats: 'Aisle, Window, Middle',
-          inFlightAmenities: 'Wi-Fi, Snacks, Power ports',
-          mealPreferences: 'Non-Veg',
-          covidGuidelines: 'Mask mandatory',
           checkInTime: '1 hour before departure',
-          paymentOptions: 'Wallet, Card, Netbanking',
-          cancellationPolicy: 'Refundable with 10% deduction',
-          offers: '5% off with code INDIGO',
+          paymentOptions: 'UPI, Wallet',
+          cancellationPolicy: 'Non-refundable',
+          offers: 'Flat ₹300 off with code AIRINDIA',
           seatPricing: {
-            aisle: 7200,
-            window: 7100,
-            middle: 7000
+            window: 5300,
+            aisle: 5100
           },
           seats: [
             { seatNumber: '1A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '1B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '1C', seatPosition: 'Middle', status: 'reserved' },
+            { seatNumber: '1B', seatPosition: 'Aisle', status: 'available' },
+            { seatNumber: '1C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '2A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '2B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '2B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '2C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '3A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '3B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '3B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '3C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '4A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '4B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '4B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '4C', seatPosition: 'Middle', status: 'available' },
             { seatNumber: '5A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '5B', seatPosition: 'Aisle', status: 'reserved' },
+            { seatNumber: '5B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '5C', seatPosition: 'Middle', status: 'available' },
-            { seatNumber: '6A', seatPosition: 'Window', status: 'reserved' },
+            { seatNumber: '6A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '6B', seatPosition: 'Aisle', status: 'available' },
             { seatNumber: '6C', seatPosition: 'Middle', status: 'available' },
-            { seatNumber: '7A', seatPosition: 'Window', status: 'reserved' },
+            { seatNumber: '7A', seatPosition: 'Window', status: 'available' },
             { seatNumber: '7B', seatPosition: 'Aisle', status: 'available' },
-            { seatNumber: '7C', seatPosition: 'Middle', status: 'reserved' },
-            { seatNumber: '8A', seatPosition: 'Window', status: 'available' },
-            { seatNumber: '8B', seatPosition: 'Aisle', status: 'reserved' },
-            { seatNumber: '8C', seatPosition: 'Middle', status: 'available' }
+            { seatNumber: '7C', seatPosition: 'Middle', status: 'available' }
           ]
         }
       ]
-    }
+    },
+    // Repeat adding more flights up to 20
 ];
 
   
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -233,7 +194,7 @@ const AdminPage = () => {
           if (userData.accountType === 'business') {
             setUserType('business');
           } else {
-            navigate('/not-authorized');
+            navigate('/home');
           }
         }
       } else {
