@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../firebase/firebaseConfig';
 import { doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { useAuth } from '../../AuthContext'; // Import the AuthContext to get user details
+import { useAuth } from '../../AuthContext';
 import './FlightBooking.css';
 
 function FlightBooking() {
   const { flightId } = useParams();
-  const { user } = useAuth(); // Get logged-in user from AuthContext
-  const navigate = useNavigate(); // Initialize useNavigate
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [flight, setFlight] = useState(null);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [loadingState, setLoadingState] = useState({ fetching: false, payment: false }); // Loader state
+  const [loadingState, setLoadingState] = useState({ fetching: false, payment: false });
   const [formData, setFormData] = useState({
     classType: 'Economy',
     mealPreference: '',
@@ -27,7 +28,22 @@ function FlightBooking() {
     phone: '',
     registrationDate: '',
   });
-  const [bookingTime, setBookingTime] = useState(null); // To store and display booking time
+  const [bookingTime, setBookingTime] = useState(null);
+  const [step, setStep] = useState(1); // Step management (1 = details, 2 = seat selection, 3 = payment)
+
+// Function to handle the next step
+const handleNextStep = () => {
+  if (step < 3) {
+    setStep(step + 1);
+  }
+};
+
+// Function to handle the previous step
+const handlePreviousStep = () => {
+  if (step > 1) {
+    setStep(step - 1);
+  }
+};
 
   useEffect(() => {
     const fetchFlight = async () => {
@@ -49,18 +65,16 @@ function FlightBooking() {
     fetchFlight();
   }, [flightId]);
 
-  // Fetch user data from Firestore if logged in
   useEffect(() => {
     if (user) {
       setUserData((prevData) => ({
         ...prevData,
-        email: user.email,  // Get email from Firebase Authentication
+        email: user.email,
       }));
 
-      // Fetch user name and other details from the registeredUsers collection
       const fetchUserDetails = async () => {
         try {
-          const userDoc = doc(db, 'registeredUsers', user.uid); // Fetch details from the registeredUsers collection
+          const userDoc = doc(db, 'registeredUsers', user.uid);
           const userDetails = await getDoc(userDoc);
           if (userDetails.exists()) {
             setUserData((prevData) => ({
@@ -110,7 +124,7 @@ function FlightBooking() {
   const handleSeatSelection = (seat) => {
     setSelectedSeats((prevSelectedSeats) => {
       if (prevSelectedSeats.includes(seat)) {
-        return prevSelectedSeats.filter((selectedSeat) => selectedSeat !== seat); 
+        return prevSelectedSeats.filter((selectedSeat) => selectedSeat !== seat);
       } else {
         return [...prevSelectedSeats, seat];
       }
@@ -235,122 +249,138 @@ function FlightBooking() {
 
 
   
-  useEffect(() => {
-    setTotalPrice(selectedClassPrice * selectedSeats.length);
-  }, [selectedClassPrice, selectedSeats]);
 
 
 
   if (loading) {
-    return <p className="loading-message">Loading booking details...</p>;
+    return <div className="loader">Loading flight details...</div>;
   }
-
-  if (!flight) {
-    return <p className="error-message">Flight not found.</p>;
-  }
-
   return (
     <div className="flight-booking-container">
-       {loadingState.fetching || loadingState.payment ? (
-         <div className="loader-overlay">
-         <div className="loader">
-           <div className="spinner"></div>
-           <p>Processing... Please wait.</p>
-         </div>
-       </div>
-      ) : null}
-
-      <div className="booking-header">
-        <h1 className="main-title">Book Your Flight</h1>
-        <p className="flight-number">Flight Number: <span>{flight.flightNumber}</span></p>
-      </div>
-
-
-      <form onSubmit={(e) => e.preventDefault()} className="booking-form">
-        <div className="flight-summary">
+  {loading ? (
+    <div className="loading-container">
+      <p>Loading flight details...</p>
+    </div>
+  ) : (
+    <div>
+      {step === 1 && (
+        <div className="step-container">
+          <h2 className="step-title">Flight Details</h2>
           <div className="flight-details">
-            <h2 className="flight-airline">{flight.airline}</h2>
+            <p><strong>Flight Number:</strong> {flight.flightNumber}</p>
+            <p><strong>Airline:</strong> {flight.airline}</p>
             <p><strong>From:</strong> {flight.from} ({flight.departureCode})</p>
-            <p><strong>Airport:</strong> {flight.departureAirport}</p>
             <p><strong>To:</strong> {flight.to} ({flight.arrivalCode})</p>
-            <p><strong>Airport:</strong> {flight.arrivalAirport}</p>
+            <p><strong>Departure:</strong> {flight.departureDateTime}</p>
+            <p><strong>Arrival:</strong> {flight.arrivalDateTime}</p>
             <p><strong>Duration:</strong> {flight.duration}</p>
-            <p><strong>Is Direct:</strong> {flight.isDirect ? 'Non Stop' : 'Stopover'}</p>
           </div>
-          <div className="price-section">
-          <h3>₹{totalPrice}</h3>
-            <p className="additional-charges">{flight.classTypes.find(type => type.classType === formData.classType).baggageAllowance}</p>
-            <button
-              type="button"
-              className="book-now-btn"
-              onClick={handleProceed}
-            >
-              Proceed to Book
+          <h3 className="preferences-title">Select Your Preferences</h3>
+          <form className="preferences-form">
+            <label>
+              Class Type:
+              <select
+                name="classType"
+                value={formData.classType}
+                onChange={handleClassTypeChange}
+                className="dropdown"
+              >
+                {flight.classTypes.map((classType) => (
+                  <option key={classType.classType} value={classType.classType}>
+                    {classType.classType}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Meal Preference:
+              <input
+                type="text"
+                name="mealPreference"
+                value={formData.mealPreference}
+                onChange={handleChange}
+                placeholder="e.g., Vegetarian"
+                className="input-field"
+              />
+            </label>
+            <label className="checkbox-label">
+              Get Offers:
+              <input
+                type="checkbox"
+                name="getOffers"
+                checked={formData.getOffers}
+                onChange={handleChange}
+              />
+            </label>
+          </form>
+          <button className="next-btn" onClick={handleNextStep}>
+            Next
+          </button>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="step-container">
+          <h2 className="step-title">Select Your Seats</h2>
+          <div className="seat-selection">
+            {flight.classTypes
+              .find((type) => type.classType === formData.classType)
+              .seats.map((seat) => (
+                <button
+                  key={seat.seatNumber}
+                  className={`seat-btn ${
+                    seat.status === 'reserved' ? 'reserved' : ''
+                  } ${selectedSeats.includes(seat.seatNumber) ? 'selected' : ''}`}
+                  onClick={() => handleSeatSelection(seat.seatNumber)}
+                  disabled={seat.status === 'reserved'}
+                >
+                  {seat.seatNumber}
+                </button>
+              ))}
+          </div>
+          <div className="seat-selection-summary">
+            <p>Selected Seats: {selectedSeats.join(', ') || 'None'}</p>
+            <p>Total Price: ₹{selectedSeats.length * selectedClassPrice}</p>
+          </div>
+          <div className="navigation-buttons">
+            <button className="prev-btn" onClick={handlePreviousStep}>
+              Previous
+            </button>
+            <button className="next-btn" onClick={handleNextStep}>
+              Next
             </button>
           </div>
         </div>
+      )}
 
-        {/* Seat Map (Displayed by default) */}
-        <div className="seat-selection-section">
-          <h3>Select Your Seats</h3>
-          <div className="seat-map">
-            {flight.classTypes.find((type) => type.classType === formData.classType)
-              .seats.map((seat) => (
-                <div
-                  key={seat.seatNumber}
-                  className={`seat ${seat.status === 'reserved' ? 'reserved' : ''} ${
-                    selectedSeats.includes(seat.seatNumber) ? 'selected' : ''
-                  }`}
-                  onClick={() =>
-                    seat.status !== 'reserved' && handleSeatSelection(seat.seatNumber)
-                  }
-                >
-                  {seat.seatNumber}
-                </div>
-              ))}
+      {step === 3 && (
+        <div className="step-container">
+          <h2 className="step-title">Payment</h2>
+          <p>
+            You're booking for the following seats:{' '}
+            {selectedSeats.join(', ')} in {formData.classType} class.
+          </p>
+          <p>Total Amount: ₹{selectedSeats.length * selectedClassPrice}</p>
+          <div className="payment-container">
+            <button
+              className="pay-btn"
+              onClick={handleProceed}
+              disabled={loadingState.payment}
+            >
+              {loadingState.payment ? 'Processing...' : 'Proceed to Pay'}
+            </button>
+          </div>
+          <div className="navigation-buttons">
+            <button className="prev-btn" onClick={handlePreviousStep}>
+              Previous
+            </button>
           </div>
         </div>
-
-        <div className="options-section">
-          <h3>Select Your Preferences</h3>
-
-          {/* Class Type Dropdown */}
-          <div className="option">
-            <select
-              name="classType"
-              value={formData.classType}
-              onChange={handleClassTypeChange}
-            >
-              
-              {flight.classTypes.map((classOption, index) => (
-                <option key={index} value={classOption.classType}>
-                  {classOption.classType}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Meal Preference Dropdown */}
-          <div className="option">
-            <select
-              name="mealPreference"
-              value={formData.mealPreference}
-              onChange={handleChange}
-            >
-              <option value="Veg">Vegetarian</option>
-              <option value="Non-Veg">Non-Vegetarian</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Display the booking time after confirmation */}
-        {bookingTime && (
-          <div className="booking-time-section">
-            <p>Booking Time: {bookingTime}</p>
-          </div>
-        )}
-      </form>
+      )}
     </div>
+  )}
+</div>
+
   );
 }
 
