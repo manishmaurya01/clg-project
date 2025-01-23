@@ -11,6 +11,7 @@ function FlightBooking() {
   const navigate = useNavigate(); // Initialize useNavigate
   const [flight, setFlight] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [loadingState, setLoadingState] = useState({ fetching: false, payment: false }); // Loader state
   const [formData, setFormData] = useState({
     classType: 'Economy',
@@ -109,7 +110,7 @@ function FlightBooking() {
   const handleSeatSelection = (seat) => {
     setSelectedSeats((prevSelectedSeats) => {
       if (prevSelectedSeats.includes(seat)) {
-        return prevSelectedSeats.filter((selectedSeat) => selectedSeat !== seat);
+        return prevSelectedSeats.filter((selectedSeat) => selectedSeat !== seat); 
       } else {
         return [...prevSelectedSeats, seat];
       }
@@ -232,6 +233,14 @@ function FlightBooking() {
     
   };
 
+
+  
+  useEffect(() => {
+    setTotalPrice(selectedClassPrice * selectedSeats.length);
+  }, [selectedClassPrice, selectedSeats]);
+
+
+
   if (loading) {
     return <p className="loading-message">Loading booking details...</p>;
   }
@@ -269,7 +278,7 @@ function FlightBooking() {
             <p><strong>Is Direct:</strong> {flight.isDirect ? 'Non Stop' : 'Stopover'}</p>
           </div>
           <div className="price-section">
-            <h3>₹{selectedClassPrice}</h3>  
+          <h3>₹{totalPrice}</h3>
             <p className="additional-charges">{flight.classTypes.find(type => type.classType === formData.classType).baggageAllowance}</p>
             <button
               type="button"
@@ -312,7 +321,7 @@ function FlightBooking() {
               value={formData.classType}
               onChange={handleClassTypeChange}
             >
-              <option value="Economy">Economy</option>
+              
               {flight.classTypes.map((classOption, index) => (
                 <option key={index} value={classOption.classType}>
                   {classOption.classType}
