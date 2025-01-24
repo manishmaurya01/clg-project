@@ -248,65 +248,64 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Current Bookings Tab */}
-        {activeTab === 'currentBookings' && (
-          <div className="bookings-content">
-            <h2>Current Bookings</h2>
-            {bookings.length === 0 ? (
-              <p>No current bookings found.</p>
-            ) : (
-              <table className="bookings-table">
-                <thead>
-                  <tr>
-                    <th>Flight</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>arrivalTime</th>
-                    <th>departureTime</th>
-                    <th>Booking Time</th>
-                    <th>Class</th>
-                    <th>Seats</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookings.map((booking) => {
-                    const { flightDetails, selectedSeats, bookingTime } = booking;
-                    const formattedBookingTime = bookingTime
-                      ? new Date(bookingTime.seconds * 1000).toLocaleString()
-                      : 'N/A';
+{activeTab === 'currentBookings' && (
+  <div className="bookings-content">
+    <h2>Current Bookings</h2>
+    {bookings.length === 0 ? (
+      <p>No current bookings found.</p>
+    ) : (
+      <table className="bookings-table">
+        <thead>
+          <tr>
+            <th>Flight</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Arrival Time</th>
+            <th>Departure Time</th>
+            <th>Booking Time</th>
+            <th>Class</th>
+            <th>Seats</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bookings.map((booking) => {
+            const { flightDetails, selectedSeats, bookingTime } = booking;
+            const formattedBookingTime = bookingTime
+              ? new Date(bookingTime.toDate()).toLocaleString()
+              : 'N/A';  // Correctly handling Firestore timestamp
 
-                    const seats = Array.isArray(flightDetails.selectedSeats) && flightDetails.selectedSeats.length > 0
-                      ? flightDetails.selectedSeats.join(', ')
-                      : 'No seats selected';
+            const seats = Array.isArray(flightDetails.selectedSeats) && flightDetails.selectedSeats.length > 0
+              ? flightDetails.selectedSeats.join(', ')
+              : 'No seats selected';
 
-                    return (
-                      <tr key={booking.id}>
-                        <td>{flightDetails.airline} ({flightDetails.flightNumber})</td>
-                        <td>{flightDetails.from}</td>
-                        <td>{flightDetails.to}</td>
-                        <td>{new Date(flightDetails.arrivalDateTime).toLocaleString()}</td>
-<td>{new Date(flightDetails.departureDateTime).toLocaleString()}</td>
+            return (
+              <tr key={booking.id}>
+                <td>{flightDetails.airline} ({flightDetails.flightNumber})</td>
+                <td>{flightDetails.from}</td>
+                <td>{flightDetails.to}</td>
+                <td>{new Date(flightDetails.arrivalDateTime).toLocaleString()}</td>
+                <td>{new Date(flightDetails.departureDateTime).toLocaleString()}</td>
+                <td>{formattedBookingTime}</td>
+                <td>{flightDetails.classType}</td>
+                <td>{seats}</td>
+                <td>
+                  <button
+                    className="cancel-btn"
+                    onClick={() => cancelBooking(booking.id)}
+                  >
+                    Cancel Booking
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    )}
+  </div>
+)}
 
-                        <td>{formattedBookingTime}</td>
-                        <td>{flightDetails.classType}</td>
-                        <td>{seats}</td>
-                        <td>
-                          <button
-                            className="cancel-btn"
-                            onClick={() => cancelBooking(booking.id)}
-                          >
-                            Cancel Booking
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
